@@ -1,17 +1,7 @@
-# fastapi
-# uvicorn
-# requests
-# streamlit
-# sqlalchemy
-# python-dotenv
-# google-generativeai
-
-fastapi==0.113.0
-uvicorn[standard]==0.23.2
+fastapi==0.114.0
+uvicorn==0.23.2
 requests==2.31.0
-streamlit==1.29.0
+streamlit==1.27.1
 sqlalchemy==2.0.20
 python-dotenv==1.0.0
 google-generativeai==0.8.5
-google-ai-generativelanguage==0.6.18
-
