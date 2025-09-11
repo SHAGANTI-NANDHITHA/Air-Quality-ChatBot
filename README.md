@@ -1,12 +1,15 @@
 🌍 Air Quality Chatbot
+
 An interactive chatbot that provides personalized health guidance based on air quality (AQI) data.
 ✨ Features
+
 ✅ User Profiles → Save your name, age group, and health conditions (e.g., asthma, heart issues).
 ✅ Real-time AQI Data → Fetches live AQI from OpenWeather API.
 ✅ Personalized Precautions → Matches user health conditions with AQI rules from rules.json.
 ✅ AI-Powered Chat → Uses Google Gemini API to generate conversational health advice.
 ✅ Frontend with Streamlit → Easy-to-use interface for interacting with the chatbot.
 ✅ Backend with FastAPI → Handles user profiles, AQI fetching, and AI responses.
+
 🛠️ Tech Stack
 Backend: FastAPI, SQLite, Uvicorn
 Frontend: Streamlit
