@@ -1,0 +1,188 @@
+[
+  {
+    "condition": "general",
+    "min_aqi": 0,
+    "max_aqi": 50,
+    "precaution": "Air quality is good. No restrictions for outdoor activities."
+  },
+  {
+    "condition": "general",
+    "min_aqi": 51,
+    "max_aqi": 100,
+    "precaution": "Air quality is moderate. Outdoor activities are safe for most, but sensitive groups should be cautious."
+  },
+  {
+    "condition": "general",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Unhealthy for sensitive groups. Reduce prolonged outdoor exertion."
+  },
+  {
+    "condition": "general",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Unhealthy for everyone. Limit outdoor activities, use masks if necessary."
+  },
+  {
+    "condition": "general",
+    "min_aqi": 201,
+    "max_aqi": 300,
+    "precaution": "Very unhealthy. Avoid outdoor activities, stay indoors with air purifiers."
+  },
+  {
+    "condition": "general",
+    "min_aqi": 301,
+    "max_aqi": 500,
+    "precaution": "Hazardous. Strictly stay indoors, use N95 masks and air purifiers if available."
+  },
+
+  {
+    "condition": "asthma",
+    "min_aqi": 0,
+    "max_aqi": 100,
+    "precaution": "Safe to go outdoors, but carry inhaler and avoid high-traffic areas."
+  },
+  {
+    "condition": "asthma",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Air quality may trigger asthma. Limit outdoor exertion, wear a mask if needed."
+  },
+  {
+    "condition": "asthma",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Avoid outdoor activity. Stay indoors with clean air, use inhaler if symptoms occur."
+  },
+  {
+    "condition": "asthma",
+    "min_aqi": 201,
+    "max_aqi": 500,
+    "precaution": "Very high risk for asthma patients. Strictly stay indoors, keep inhaler nearby, avoid exposure completely."
+  },
+
+  {
+    "condition": "heart",
+    "min_aqi": 0,
+    "max_aqi": 100,
+    "precaution": "Safe, but avoid overexertion if you feel discomfort."
+  },
+  {
+    "condition": "heart",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Mild risk. Avoid intense outdoor activities."
+  },
+  {
+    "condition": "heart",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Increased risk of chest discomfort or shortness of breath. Stay indoors."
+  },
+  {
+    "condition": "heart",
+    "min_aqi": 201,
+    "max_aqi": 500,
+    "precaution": "Very high risk. Stay indoors, monitor heart condition, avoid exertion."
+  },
+
+  {
+    "condition": "pregnant",
+    "min_aqi": 0,
+    "max_aqi": 100,
+    "precaution": "Air quality is safe. Gentle outdoor activities are fine."
+  },
+  {
+    "condition": "pregnant",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Limit outdoor exposure. Prefer indoor environments."
+  },
+  {
+    "condition": "pregnant",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Avoid outdoor activity. Stay indoors, stay hydrated."
+  },
+  {
+    "condition": "pregnant",
+    "min_aqi": 201,
+    "max_aqi": 500,
+    "precaution": "High risk. Stay indoors, use purifier if possible, avoid exposure."
+  },
+
+  {
+    "condition": "children",
+    "min_aqi": 0,
+    "max_aqi": 100,
+    "precaution": "Safe for outdoor play. Encourage outdoor activity."
+  },
+  {
+    "condition": "children",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Outdoor play should be reduced. Avoid dusty areas."
+  },
+  {
+    "condition": "children",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Avoid outdoor play. Prefer indoor games."
+  },
+  {
+    "condition": "children",
+    "min_aqi": 201,
+    "max_aqi": 500,
+    "precaution": "Stay strictly indoors. Ensure indoor air is clean."
+  },
+
+  {
+    "condition": "senior",
+    "min_aqi": 0,
+    "max_aqi": 100,
+    "precaution": "Safe, but monitor for any breathing issues."
+  },
+  {
+    "condition": "senior",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Limit outdoor activity, especially walking in polluted areas."
+  },
+  {
+    "condition": "senior",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Stay indoors as much as possible. Use masks if going out."
+  },
+  {
+    "condition": "senior",
+    "min_aqi": 201,
+    "max_aqi": 500,
+    "precaution": "High risk for respiratory issues. Stay indoors, use air purifiers."
+  },
+
+  {
+    "condition": "copd",
+    "min_aqi": 0,
+    "max_aqi": 100,
+    "precaution": "Air quality is safe, but continue medications regularly."
+  },
+  {
+    "condition": "copd",
+    "min_aqi": 101,
+    "max_aqi": 150,
+    "precaution": "Mild risk of symptoms. Limit exertion, keep medications handy."
+  },
+  {
+    "condition": "copd",
+    "min_aqi": 151,
+    "max_aqi": 200,
+    "precaution": "Avoid outdoor activity. Use inhalers/medication as prescribed."
+  },
+  {
+    "condition": "copd",
+    "min_aqi": 201,
+    "max_aqi": 500,
+    "precaution": "Very high risk. Stay indoors, avoid pollution exposure completely."
+  }
+]
