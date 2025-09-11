@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-BACKEND_URL = "http://127.0.0.1:8000"
+BACKEND_URL = "https://air-quality-chatbot-n17y.onrender.com"
 
 st.set_page_config(page_title="Air Quality Chatbot", layout="centered")
 st.title("🌍 Air Quality Health Chatbot")
