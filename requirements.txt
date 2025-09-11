@@ -12,5 +12,6 @@ requests==2.31.0
 streamlit==1.29.0
 sqlalchemy==2.0.20
 python-dotenv==1.0.0
-google-generativeai==0.9.0
+google-generativeai==0.8.5
 google-ai-generativelanguage==0.6.18
+
