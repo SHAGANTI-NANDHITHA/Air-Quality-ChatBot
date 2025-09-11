@@ -1,25 +1,39 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sqlite3
 import requests
 import json
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai  # Gemini SDK
+import google.generativeai as genai
 
-load_dotenv()  # Load .env file
+# Load .env for local testing
+load_dotenv()
 
 # --- API KEYS ---
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 if not GEMINI_API_KEY:
-    raise ValueError("❌ GEMINI_API_KEY not set in .env")
+    raise ValueError("❌ GEMINI_API_KEY not set")
+if not OPENWEATHER_API_KEY:
+    raise ValueError("❌ OPENWEATHER_API_KEY not set")
 
+# Configure Gemini API
 genai.configure(api_key=GEMINI_API_KEY)
 
 # --- FastAPI app ---
 app = FastAPI()
+
+# Enable CORS for all origins (frontend access)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- DB Setup ---
 def init_db():
@@ -61,16 +75,17 @@ def save_profile(profile: UserProfile):
 
 # --- Fetch AQI Data from OpenWeather ---
 def get_aqi(city: str):
-    # OpenWeather Air Pollution API requires lat/lon
-    coords = {
-        "Chennai": (13.0827, 80.2707),
-        # Add other cities here if needed
-    }
-    lat, lon = coords.get(city, (13.0827, 80.2707))  # default to Chennai
-
-    url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}"
     try:
-        resp = requests.get(url)
+        geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={OPENWEATHER_API_KEY}"
+        geo_resp = requests.get(geo_url)
+        geo_data = geo_resp.json()
+        if not geo_data:
+            return {"error": f"City '{city}' not found."}
+        lat = geo_data[0]["lat"]
+        lon = geo_data[0]["lon"]
+
+        aqi_url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}"
+        resp = requests.get(aqi_url)
         if resp.status_code == 200:
             return resp.json()
         else:
@@ -100,29 +115,34 @@ def chat(query: ChatQuery):
         with open("rules.json", "r") as f:
             rules = json.load(f)
         if "list" in aqi_data and len(aqi_data["list"]) > 0:
-            aqi_value = aqi_data["list"][0]["main"].get("aqi", 1) * 50  # scale AQI 1-5 → approx 50-250
+            aqi_value = aqi_data["list"][0]["main"].get("aqi", 1) * 50
             for rule in rules:
                 if rule["condition"] == condition and rule["min_aqi"] <= aqi_value <= rule["max_aqi"]:
                     precaution = rule["precaution"]
     except Exception as e:
         precaution = f"(⚠️ rules.json error: {str(e)})"
 
-    # --- Construct Prompt for Gemini ---
+    # --- Gemini Prompt ---
     prompt = f"""
-You are an Air Quality Health Assistant.
-User: {query.name}, Condition: {condition}, Age: {age_group}
-City: {query.city}, AQI Data: {aqi_data}
-Health Guidance Rule: {precaution}
-User Question: {query.query}
-
-Answer conversationally and provide practical health advice.
-"""
+    You are an Air Quality Health Assistant.
+    User: {query.name}, Condition: {condition}, Age: {age_group}
+    City: {query.city}, AQI Data: {aqi_data}
+    Health Guidance Rule: {precaution}
+    User Question: {query.query}
+    Answer conversationally and provide practical health advice.
+    """
 
     try:
-           response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
-           reply = response.text
+        response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
+        reply = response.text
     except Exception as e:
-          reply = f"⚠️ Gemini API Error: {e}"
-
+        reply = f"⚠️ Gemini API Error: {e}"
 
     return {"response": reply}
+
+# --- Render port ---
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("backend:app", host="0.0.0.0", port=port)
