@@ -96,20 +96,28 @@ def get_aqi(city: str):
 # --- Chat Endpoint ---
 @app.post("/chat/")
 def chat(query: ChatQuery):
-    # Fetch user profile
+    # Fetch user profile from DB
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     cursor.execute("SELECT condition, age_group FROM users WHERE name=?", (query.name,))
     row = cursor.fetchone()
     conn.close()
 
+    # If user profile not found, ask them to register
     if not row:
-        return {"response": "⚠️ I don’t know your health profile yet. Please set it in the sidebar."}
+        return {
+            "response": f"⚠️ Hi {query.name}, I don’t have your medical history yet. "
+                        f"Please set it by calling the /profile/ endpoint with your "
+                        f"condition (e.g., asthma, heart disease) and age group."
+        }
 
+    # Extract saved medical history
     condition, age_group = row
+
+    # Fetch AQI data
     aqi_data = get_aqi(query.city)
 
-    # Load rules
+    # Default precaution
     precaution = "General guidance."
     try:
         with open("rules.json", "r") as f:
@@ -124,13 +132,34 @@ def chat(query: ChatQuery):
 
     # --- Gemini Prompt ---
     prompt = f"""
-    You are an Air Quality Health Assistant.
-    User: {query.name}, Condition: {condition}, Age: {age_group}
-    City: {query.city}, AQI Data: {aqi_data}
-    Health Guidance Rule: {precaution}
-    User Question: {query.query}
-    Answer conversationally and provide practical health advice.
-    """
+   You are an Air Quality Health Assistant.
+
+   User Details:
+   - Name: {query.name}
+   - Age Group: {age_group}
+   - Health Condition: {condition}
+
+   Location & Air Quality:
+   - City: {query.city}
+   - AQI Data (pollutants in ppm): {aqi_data}
+
+   Precautions to Follow: {precaution}
+
+   User Question: {query.query}
+
+   Instructions:
+   1. List each pollutant from the AQI data with its value in ppm.
+   2. Explain clearly whether the level of each pollutant is safe, moderate, or hazardous.
+   3. Highlight which pollutants are most relevant to the user's health condition.
+   4. Give practical advice based on the current levels and the user's condition.
+   5. Respond conversationally and make it easy to understand, using simple language.
+
+   Provide the output in a structured way like this:
+   - Pollutant: Value ppm — Status (Safe/Moderate/Hazardous)
+   - Impact on you: [Explain how it affects the user's condition]
+   - Advice: [Practical guidance based on current levels]
+   """
+
 
     try:
         response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
