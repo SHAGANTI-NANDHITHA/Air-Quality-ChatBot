@@ -132,40 +132,39 @@ def chat(query: ChatQuery):
 
     # --- Gemini Prompt ---
     prompt = f"""
-   You are an Air Quality Health Assistant.
+You are an Air Quality Health Assistant. Keep responses concise and structured.
 
-   User Details:
-   - Name: {query.name}
-   - Age Group: {age_group}
-   - Health Condition: {condition}
+User Details:
+- Name: {query.name}
+- Age Group: {age_group}
+- Health Condition: {condition}
 
-   Location & Air Quality:
-   - City: {query.city}
-   - AQI Data (pollutants in ppm): {aqi_data}
+Location & Air Quality:
+- City: {query.city}
+- AQI Data (pollutants in ppm): {aqi_data}
 
-   Precautions to Follow: {precaution}
+Precautions: {precaution}
 
-   User Question: {query.query}
+User Question: {query.query}
 
-   Instructions:
-   1. List each pollutant from the AQI data with its value in ppm.
-   2. Explain clearly whether the level of each pollutant is safe, moderate, or hazardous.
-   3. Highlight which pollutants are most relevant to the user's health condition.
-   4. Give practical advice based on the current levels and the user's condition.
-   5. Respond conversationally and make it easy to understand, using simple language.
-
-   Provide the output in a structured way like this:
+Instructions:
+1. For each pollutant in AQI data, show:
    - Pollutant: Value ppm — Status (Safe/Moderate/Hazardous)
-   - Impact on you: [Explain how it affects the user's condition]
-   - Advice: [Practical guidance based on current levels]
-   """
+   - Impact: 1 short sentence about relevance to user's condition
+   - Advice: 1 short sentence with practical guidance
+2. Be brief — use bullet points and avoid long paragraphs.
+3. Keep the entire response compact, but cover pollutants, impact, and precautions.
+"""
 
 
     try:
-        response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
+        model = genai.GenerativeModel("gemini-flash-latest")  #  matches list_models output
+        response = model.generate_content(prompt)
         reply = response.text
     except Exception as e:
         reply = f"⚠️ Gemini API Error: {e}"
+
+
 
     return {"response": reply}
 
