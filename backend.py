@@ -168,6 +168,17 @@ Instructions:
 
     return {"response": reply}
 
+
+# Simple root and health endpoints so the service's primary URL doesn't 404 on hosts like Render
+@app.get("/")
+def root():
+    return {"message": "Air Quality Backend is running. See /docs for API docs."}
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 # --- Render port ---
 if __name__ == "__main__":
     import uvicorn
